@@ -12,7 +12,7 @@ public class ESConnectionQA {
 	//private static final String HOST = "103.96.251.76";
 	private static final String HOST = "13.234.108.103";
 	//private static final String HOST = "localhost";
-	private static final int PORT_ONE = 9200;
+	private static final int PORT_ONE = 9201;
 	private static final int PORT_TWO = 9201;
 	private static final String SCHEME = "http";
 

@@ -101,7 +101,7 @@ public class XlxsFileReaderUtil
                     	  i++;
                           break;
                       case Cell.CELL_TYPE_STRING:
-                    	  vals[i]=cell.getStringCellValue();
+                    	  vals[i]=cell.getStringCellValue().toLowerCase();
                     	  i++;
                           break;
                   }

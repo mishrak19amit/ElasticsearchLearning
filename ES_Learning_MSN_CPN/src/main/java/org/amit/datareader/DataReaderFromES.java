@@ -46,7 +46,7 @@ public class DataReaderFromES {
 
 		BoolQueryBuilder boolQueryBuilder = buildBoolQueryForCPNMSN(searchString);
 
-		searchSourceBuilder.size(10).query(boolQueryBuilder);
+		searchSourceBuilder.size(1).query(boolQueryBuilder);
 
 		return searchSourceBuilder;
 	}
@@ -77,46 +77,71 @@ public class DataReaderFromES {
 	public void prepareCPNMSNMapping(String searchString, RestHighLevelClient restHighLevelClient,
 			String actualCPNDetail, String suggestedMsn) {
 
-		LinkedHashMap<String, String> msnMap = new LinkedHashMap<String, String>();
-
 		SearchResponse response = getSearchResponseForCPNMSN(searchString, restHighLevelClient);
 
+		boolean isForCategoryIdentification=true;
+		
 		if (null != response) {
 
-			int pos = 1;
-			boolean found = false;
-			for (SearchHit val : response.getHits().getHits()) {
-				if (val.getSourceAsMap().get("moglixPartNumber").toString().compareToIgnoreCase(suggestedMsn) == 0) {
-					msnMap.put("FounPosition", String.valueOf(pos));
-					found = true;
-					foundMatchCount++;
-					break;
-				}
-				pos++;
+			if(isForCategoryIdentification) {
+				prepareCategoryIdentificationForCPNs(response, actualCPNDetail, suggestedMsn);
 			}
-
-			if (found) {
-				// msnMap.put("suggestedMSN", "suggestedMSN=" + suggestedMsn);
-				int countLimit = 9;
-				for (SearchHit val : response.getHits().getHits()) {
-
-					msnMap.put(val.getSourceAsMap().get("moglixPartNumber").toString(),
-							val.getSourceAsMap().get("moglixPartNumber").toString());
-					if (countLimit == 0)
-						break;
-					countLimit--;
-
-				}
-
-			} else {
-				for (int i = 0; i < 10; i++) {
-					msnMap.put("", "");
-				}
+			else {
+				prepareCpnMSnMappingForProduct(response, actualCPNDetail, suggestedMsn);
 			}
+		
 		}
 
-		cpnMSNMapping.put(actualCPNDetail, msnMap);
 
+	}
+	
+	private void prepareCategoryIdentificationForCPNs(SearchResponse response, String actualCPNDetail,
+			String suggestedMsn) {
+		LinkedHashMap<String, String> msnMap = new LinkedHashMap<String, String>();
+		
+		for (SearchHit val : response.getHits().getHits()) {
+			String taxonomyList = val.getSourceAsMap().get("taxonomyList").toString();
+			System.out.println(taxonomyList);
+			
+		}
+		
+		
+	}
+
+	public void prepareCpnMSnMappingForProduct(SearchResponse response, String actualCPNDetail, String suggestedMsn) {
+
+		LinkedHashMap<String, String> msnMap = new LinkedHashMap<String, String>();
+		int pos = 1;
+		boolean found = false;
+		for (SearchHit val : response.getHits().getHits()) {
+			if (val.getSourceAsMap().get("moglixPartNumber").toString().compareToIgnoreCase(suggestedMsn) == 0) {
+				msnMap.put("FounPosition", String.valueOf(pos));
+				found = true;
+				foundMatchCount++;
+				break;
+			}
+			pos++;
+		}
+
+		if (found) {
+			// msnMap.put("suggestedMSN", "suggestedMSN=" + suggestedMsn);
+			int countLimit = 9;
+			for (SearchHit val : response.getHits().getHits()) {
+
+				msnMap.put(val.getSourceAsMap().get("moglixPartNumber").toString(),
+						val.getSourceAsMap().get("moglixPartNumber").toString());
+				if (countLimit == 0)
+					break;
+				countLimit--;
+
+			}
+
+		} else {
+			for (int i = 0; i < 10; i++) {
+				msnMap.put("", "");
+			}
+		}
+		cpnMSNMapping.put(actualCPNDetail, msnMap);
 	}
 
 	public LinkedHashMap<String, LinkedHashMap<String, String>> getCPNMSNMApping(LinkedHashMap<String, LinkedHashMap<String, String>> cpnMap,
