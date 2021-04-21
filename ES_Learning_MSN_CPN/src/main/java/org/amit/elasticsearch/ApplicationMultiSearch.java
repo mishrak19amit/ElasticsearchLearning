@@ -33,7 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Application {
+public class ApplicationMultiSearch {
 	
 	// The config parameters for the connection
 	private static final String HOST = "localhost";

@@ -1,12 +1,17 @@
 package org.amit.elasticsearch.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * @author Deepti Verma
+ *
+ */
 public class ProductInfo implements Serializable {
 	/**
 	 * 
@@ -77,7 +82,59 @@ public class ProductInfo implements Serializable {
 	private String itemsInPack;
 	private String productHsn;
 	private String rating;
+	private List<String> productTagId;
+	private boolean variantFlag;
+	private List<String> filterableAttribute;
+	private Date updatedOnES;
+	private String mtoJustification;
+	private String countryOrigin;
+	private String country;
+	
+	private long createdAt;
+	
+	private Map<String,String> dynamicFields;
+	private List<String> categoryHierarchy;
 
+	
+	public List<String> getCategoryHierarchy() {
+		return categoryHierarchy;
+	}
+
+	public void setCategoryHierarchy(List<String> categoryHierarchy) {
+		this.categoryHierarchy = categoryHierarchy;
+	}
+
+	public Date getUpdatedOnES() {
+		return updatedOnES;
+	}
+
+	public void setUpdatedOnES(Date updatedOnES) {
+		this.updatedOnES = updatedOnES;
+	}
+
+	public List<String> getFilterableAttribute() {
+		return filterableAttribute;
+	}
+
+	public void setFilterableAttribute(List<String> filterableAttribute) {
+		this.filterableAttribute = filterableAttribute;
+	}
+
+	public boolean isVariantFlag() {
+		return variantFlag;
+	}
+
+	public void setVariantFlag(boolean variantFlag) {
+		this.variantFlag = variantFlag;
+	}
+
+	public List<String> getProductTagId() {
+		return productTagId;
+	}
+
+	public void setProductTagId(List<String> productTagId) {
+		this.productTagId = productTagId;
+	}
 
 	public ProductInfo() {
 		this.mrp = new HashMap<String, Double>();
@@ -100,6 +157,16 @@ public class ProductInfo implements Serializable {
 		this.salesPriceSortFieldDesc = new HashMap<String, Double>();
 		this.priceBySupplierId = new HashMap<String, ProductPriceInfo>();
 		this.score = new HashMap<String, Double>();
+		dynamicFields = new HashMap<String, String>();
+		this.categoryHierarchy = new ArrayList<>();
+	}
+
+	public Map<String, String> getDynamicFields() {
+		return dynamicFields;
+	}
+
+	public void setDynamicFields(Map<String, String> dynamicFields) {
+		this.dynamicFields = dynamicFields;
 	}
 
 	public String getRating() {
@@ -509,6 +576,37 @@ public class ProductInfo implements Serializable {
 	public void setItemsInPack(String itemsInPack) {
 		this.itemsInPack = itemsInPack;
 	}
-	
-	
+
+	public String getMtoJustification() {
+		return mtoJustification;
+	}
+
+	public void setMtoJustification(String mtoJustification) {
+		this.mtoJustification = mtoJustification;
+	}
+
+	public String getCountryOrigin() {
+		return countryOrigin;
+	}
+
+	public void setCountryOrigin(String countryOrigin) {
+		this.countryOrigin = countryOrigin;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(long createdAt) {
+		this.createdAt = createdAt;
+	}
+
 }
